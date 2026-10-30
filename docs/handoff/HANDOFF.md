@@ -17,7 +17,7 @@
 
 ## §1 当前进展
 
-- Captured at：2026-10-30 17:36
+- Captured at：2026-10-30 17:42
 - PLAN_VERSION：以 `docs/pm/PRODUCT_PLAN.md` 为需求真源（当前 V1.1）
 - PROJECT_PHASE：DEVELOP（用户已下「开发」令；Phase1 Gate 记 IN_PROGRESS，按连续推进执行）
 - PLAN_READINESS_SCORE：88
@@ -31,7 +31,7 @@
 
 ## §2 下一步
 
-- 下一步：等用户人耳确认后签收 → 按 A1 重出图标方向①（192/512/180）→ 补 AC-33 冻结记录 → 补 360×640 窄屏与 OPPO/华为安装入口说明（R3）
+- 下一步：等用户人耳确认＋清空数据试用后签收 → 按 A1 重出图标方向①（192/512/180）→ 补 AC-33 冻结记录 → 补 360×640 窄屏与 OPPO/华为安装入口说明（R3）
 - 已拍板：A1 肌肉守护者/MuscleKeeper（图标方向①腿形护盾，现网图标仍为②，待重出）/ D1 暂不做导出 / E1+E2 全授权（commit、push origin/main、Pages 工作流、public 仓库）/ F1 Redmi（QA 机 22101316C）
 - permission_request：（无）
 
