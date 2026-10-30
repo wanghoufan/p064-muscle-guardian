@@ -7,6 +7,16 @@
 > 3. **参考位不预读**：`docs/architecture-facts.md`（架构与构建事实）、`docs/risks.md`（风险）、根 `agent.md`（踩坑与审查交付约定）只在需要时查。
 > 4. **体系管家**：用户说**「你是体系管家」**⇒ 你接管**整套 ORCA 治理体系**的内容管理与修改（`AGENTS.md`／`docs/sop/`／`docs/roles/`／`scripts/`／模板／两包同步／`ORCA治理体系说明.md`／体系专线 HANDOFF），读本页 ＋ 项目 `docs/handoff/HANDOFF.md` §0–§2（母版另读 `体系管家-HANDOFF.md` §0–§3）直接执行，不派治理角色链；红线照旧（不 commit/push、不批量铺包、不改质量门判定与账本 schema）。
 
+## 📌 接手本仓库开发（自动加载 · 零交接动作）
+
+本仓库＝**公开项目 `wanghoufan/p064-muscle-guardian`**「肌肉守护者」App（Expo/React Native，含 Web PWA + Android APK，数据全本地，v0.1.0 已发布）。**任何智能体开始开发前，先读 `docs/handoff/ONBOARD-NEXT.md`**（2 分钟速览：当前状态 / 红线 / 阅读顺序 / 还差什么）。三条绝对红线（违反即事故）：
+
+1. 🔒 **签名密钥密码只在本机 `android-apk/.keystore-pass`**，仓库与任何文档均无明文；丢了无法给已发布 App 打更新包。别在代码里找、也别提交。构建用 `bash android-apk/build-release.sh`（脚本自动读该文件）。
+2. 仓库 **public**，绝不写入密钥或隐私。
+3. 项目**只做中文**（`src/i18n/strings.ts` 规定「不做英文」）；英文仅既有双语位点（主页 README、个人站）同步。
+
+在线站 `https://p064-muscle-guardian.pages.dev`；GitHub Release `v0.1.0` 含 release 签名 APK `muscle-guardian-v0.1.0.apk`。
+
 ## 红线（任何角色、任何时候）
 
 - **P0 没完 + 人没喊停 ⇒ 不准收工**，不准「先到这里」。
