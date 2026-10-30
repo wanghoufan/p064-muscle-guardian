@@ -1,0 +1,3 @@
+{"task": "T0", "project": "p", "date": "2026-10-14", "role": "builder", "model": "codebuddy/glm-5.3-flash", "result": "PASS", "rework": 0, "escalated": "NO", "escalation_reason": null, "tokens": null, "cost_cny": null}
+{"task": "T1", "project": "p", "date": "2026-10-14", "role": "builder", "model": "codebuddy/glm-5.3-flash", "result": "PASS", "rework": 0, "escalated": "NO", "escalation_reason": null, "tokens": null, "cost_cny": null}
+{"task": "T2", "project": "p", "date": "2026-10-14", "role": "builder", "model": "codebuddy/glm-5.3-flash", "result": "PASS", "rework": 0, "escalated": "NO", "escalation_reason": null, "tokens": null, "cost_cny": null}

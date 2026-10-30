@@ -1,0 +1,2 @@
+{"task": "T1", "project": "p", "date": "2026-10-17", "role": "qa", "model": "codex/gpt-6-luna", "result": "PASS", "rework": 0, "escalated": "NO", "escalation_reason": null, "tokens": null, "cost_cny": null, "chain_status": "OPEN"}
+{"task": "T1", "project": "p", "date": "2026-10-17", "role": "qa", "model": "codex/gpt-6-luna", "result": "FAIL", "rework": 0, "escalated": "NO", "escalation_reason": null, "tokens": null, "cost_cny": null, "chain_status": "OPEN", "note": "更正：以 DISPATCH 的 FAIL 为准（T18-041 实际被打回）"}

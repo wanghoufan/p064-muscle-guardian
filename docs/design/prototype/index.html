@@ -1,0 +1,668 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>肌肉守护者 · 产品原型 V2</title>
+<style>
+  :root{
+    --bg:#F7F4EC; --surface:#FFFFFF; --surface-2:#F1F4F1; --text:#1F2A24; --text-2:#7C8A81;
+    --border:#E3E0D5; --primary:#2E7D4F; --primary-soft:#E4F1E8; --danger:#C6453D; --track:#EDEAE0;
+    --radius:20px; --shadow:0 6px 18px rgba(31,42,36,.07); --gap:16px; --chip-cols:5; --timer:84px; --btn-h:56px;
+  }
+  body[data-theme="dark"]{
+    --bg:#0F1512; --surface:#1A231E; --surface-2:#222C26; --text:#EAF2EC; --text-2:#9DB0A4;
+    --border:#2B3831; --primary:#57B17E; --primary-soft:#1E3327; --danger:#E06B62; --track:#243029;
+    --shadow:0 6px 18px rgba(0,0,0,.35);
+  }
+  @media (prefers-color-scheme: dark){
+    body[data-theme="system"]{
+      --bg:#0F1512; --surface:#1A231E; --surface-2:#222C26; --text:#EAF2EC; --text-2:#9DB0A4;
+      --border:#2B3831; --primary:#57B17E; --primary-soft:#1E3327; --danger:#E06B62; --track:#243029;
+      --shadow:0 6px 18px rgba(0,0,0,.35);
+    }
+  }
+  *{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+  html,body{margin:0;padding:0}
+  body{font-family:-apple-system,"PingFang SC","Microsoft YaHei","Noto Sans SC",sans-serif;
+    background:#DDE1DA;color:var(--text);font-size:19px;line-height:1.5;
+    display:flex;align-items:center;justify-content:center;min-height:100vh}
+  .frame{position:relative;width:410px;height:844px;max-height:100vh;border-radius:38px;overflow:hidden;
+    box-shadow:0 24px 60px rgba(0,0,0,.28);background:var(--bg);display:flex;flex-direction:column}
+  @media (max-width:520px),(max-height:880px){
+    body{display:block}.frame{width:100%;height:100vh;max-height:none;border-radius:0;box-shadow:none}
+  }
+  .topbar{display:flex;align-items:center;justify-content:space-between;padding:14px 20px 4px;flex:0 0 auto}
+  .brand-name{font-size:21px;font-weight:800;letter-spacing:.5px}
+  .brand-sub{font-size:14px;color:var(--text-2);margin-top:2px}
+  .iconbtn{min-width:44px;min-height:44px;border:1px solid var(--border);background:var(--surface);
+    border-radius:12px;color:var(--text);font-size:19px;display:flex;align-items:center;justify-content:center;cursor:pointer}
+  .screen{flex:1 1 auto;min-height:0;overflow-y:auto;-webkit-overflow-scrolling:touch;padding:4px 20px 12px}
+  .screen::-webkit-scrollbar{width:0}
+  .card{background:var(--surface);border:1px solid var(--border);border-radius:var(--radius);padding:16px;box-shadow:var(--shadow)}
+  .muted{color:var(--text-2)}
+  .small{font-size:15px}
+  .h2{font-size:23px;font-weight:800;margin:20px 0 10px}
+  .row{display:flex;align-items:center;gap:12px}
+  .btn{width:100%;min-height:var(--btn-h);border:0;border-radius:var(--radius);background:var(--primary);color:#fff;
+    font-size:21px;font-weight:800;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:10px}
+  .btn:active{filter:brightness(.94)}
+  .btn.ghost{background:transparent;color:var(--text);border:1px solid var(--border)}
+  .btn.danger{background:var(--danger)}
+  .btn.soft{background:var(--primary-soft);color:var(--primary)}
+  .today{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-top:6px;
+    background:var(--primary-soft);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px}
+  .today .k{font-size:15px;color:var(--text-2)}
+  .today .v{font-size:28px;font-weight:800;color:var(--primary)}
+  .chips{display:grid;grid-template-columns:repeat(var(--chip-cols),1fr);gap:10px}
+  .chip{min-height:54px;border:1px solid var(--border);background:var(--surface);border-radius:14px;color:var(--text);
+    font-size:19px;font-weight:700;cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center}
+  .chip .unit{font-size:14px;color:var(--text-2);font-weight:400}
+  .chip:active{background:var(--primary-soft);border-color:var(--primary)}
+  .timerbox{text-align:center}
+  .timer{font-size:var(--timer);font-weight:800;line-height:1.05;font-variant-numeric:tabular-nums;letter-spacing:-2px}
+  .timer-label{font-size:15px;color:var(--text-2)}
+  .free-box{display:flex;align-items:center;justify-content:space-between;gap:16px;margin-top:10px}
+  .free-time{font-size:52px;font-weight:800;font-variant-numeric:tabular-nums}
+  .tabbar{flex:0 0 auto;display:grid;grid-template-columns:repeat(3,1fr);gap:4px;
+    height:58px;box-sizing:border-box;padding:4px 10px calc(4px + env(safe-area-inset-bottom));
+    background:var(--surface);border-top:1px solid var(--border)}
+  .tab{height:100%;min-height:0;border:0;background:transparent;border-radius:10px;color:var(--text-2);
+    font-size:15px;font-weight:600;line-height:1.2;display:flex;flex-direction:column;align-items:center;
+    justify-content:center;gap:1px;padding:0;cursor:pointer}
+  .tab.on{color:var(--primary);background:var(--primary-soft)}
+  .tab svg{width:19px;height:19px;flex:0 0 auto;display:block}
+  .tab span{font-size:15px;line-height:1.2}
+  .tabbar.hidden{display:none}
+  .sheet-mask{position:absolute;inset:0;background:rgba(0,0,0,.45);display:none;align-items:flex-end;z-index:20}
+  .sheet-mask.show{display:flex}
+  .sheet{width:100%;background:var(--bg);border-radius:22px 22px 0 0;padding:18px 20px calc(20px + env(safe-area-inset-bottom));max-height:88%;overflow:auto}
+  .modal-mask{position:absolute;inset:0;background:rgba(0,0,0,.45);display:none;align-items:center;justify-content:center;z-index:30;padding:24px}
+  .modal-mask.show{display:flex}
+  .modal{width:100%;background:var(--surface);border-radius:22px;padding:22px}
+  .modal h3{font-size:23px;margin:0 0 8px}
+  .modal p{margin:0 0 18px;font-size:19px;color:var(--text-2)}
+  .modal-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+  .countdown{position:absolute;inset:0;display:none;align-items:center;justify-content:center;flex-direction:column;gap:24px;
+    z-index:40;background:rgba(0,0,0,.72);color:#fff}
+  .countdown.show{display:flex}
+  .countdown span{font-size:132px;font-weight:800}
+  .countdown button{min-height:48px;padding:0 24px;border-radius:12px;border:1px solid rgba(255,255,255,.6);
+    background:transparent;color:#fff;font-size:19px;cursor:pointer}
+  /* 图表：带纵坐标 */
+  .chart{display:flex;gap:8px;padding-top:6px}
+  .yaxis{display:flex;flex-direction:column;justify-content:space-between;height:120px;flex:0 0 auto;
+    font-size:14px;color:var(--text-2);text-align:right;min-width:38px}
+  .plot{position:relative;flex:1 1 auto;height:120px}
+  .plot .line{position:absolute;left:0;right:0;border-top:1px dashed var(--border)}
+  .plot .line.base{border-top:1.5px solid var(--border)}
+  .bars{position:absolute;inset:0;display:flex;align-items:flex-end;gap:6px}
+  .bar{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%}
+  .bar i{width:66%;max-width:26px;display:block;background:var(--primary);border-radius:10px 10px 3px 3px;min-height:3px}
+  .b30 .bars{gap:2px}
+  .b30 .bar i{width:100%;max-width:none;border-radius:3px}
+  .xlabels{display:flex;gap:6px;margin-top:6px}
+  .xlabels span{flex:1;text-align:center;font-size:14px;color:var(--text-2)}
+  .legend{font-size:14px;color:var(--text-2);margin-top:4px}
+  /* 统计 */
+  .statgrid{display:grid;grid-template-columns:1fr;gap:12px}
+  .stat .k{font-size:15px;color:var(--text-2)}
+  .stat .v{font-size:34px;font-weight:800;font-variant-numeric:tabular-nums}
+  .stat .u{font-size:17px;font-weight:600;color:var(--text-2);margin-left:4px}
+  .list{display:flex;flex-direction:column;gap:10px}
+  .item{display:flex;align-items:center;justify-content:space-between;padding:14px 16px;background:var(--surface);
+    border:1px solid var(--border);border-radius:14px}
+  .item .l{display:flex;flex-direction:column;gap:2px}
+  .item .t{font-size:19px;font-weight:700}
+  .item .s{font-size:15px;color:var(--text-2)}
+  .item .r{font-size:23px;font-weight:800;font-variant-numeric:tabular-nums}
+  .empty{padding:28px 16px;text-align:center;color:var(--text-2);font-size:19px}
+  .switch{width:58px;height:34px;border-radius:20px;background:var(--track);border:0;position:relative;cursor:pointer;flex:0 0 auto}
+  .switch.on{background:var(--primary)}
+  .switch span{position:absolute;top:3px;left:3px;width:28px;height:28px;border-radius:50%;background:#fff;transition:left .15s}
+  .switch.on span{left:27px}
+  .setting{display:flex;align-items:center;justify-content:space-between;gap:12px;padding:14px 0;border-bottom:1px solid var(--border)}
+  .setting:last-child{border-bottom:0}
+  .hint{font-size:15px;color:var(--text-2);margin-top:8px}
+  .toast{position:absolute;left:50%;transform:translateX(-50%);bottom:96px;background:rgba(0,0,0,.82);color:#fff;
+    padding:12px 18px;border-radius:12px;font-size:17px;z-index:50;opacity:0;transition:opacity .2s;pointer-events:none}
+  .toast.show{opacity:1}
+  /* ---------- 演示条已移除（方向已定为 B，主题改在设置里切） ---------- */
+  /* 方向 A：大字极简 */
+  body.dir-a{--radius:12px;--timer:96px;--btn-h:64px;--chip-cols:5;--shadow:none}
+  body.dir-a .card{background:transparent;border:0;padding:0;box-shadow:none}
+  body.dir-a .today{background:transparent;border:0;padding:0 0 6px}
+  body.dir-a .chip{border-radius:10px;min-height:60px;font-size:20px}
+  /* 方向 B：卡片数据（已选） */
+  body.dir-b{--radius:20px;--timer:84px;--chip-cols:5}
+  body.dir-b .chip{min-height:52px;font-size:19px}
+  body.dir-b .btn{border-radius:18px}
+  /* 方向 C：高对比大按钮 */
+  body.dir-c{--radius:14px;--timer:88px;--btn-h:96px;--chip-cols:2;--shadow:none}
+  body.dir-c .chip{min-height:78px;font-size:23px;font-weight:800}
+  body.dir-c .btn{font-size:23px}
+  body.dir-c .screen{background:var(--surface-2)}
+  body.dir-c .card{border-width:2px}
+  body.dir-c .tab{font-weight:800}
+  body.dir-c .tab.on{background:var(--primary);color:#fff}
+</style>
+</head>
+<body class="dir-b" data-theme="system">
+<div class="frame" id="frame">
+
+  <div class="topbar">
+    <div>
+      <div class="brand-name">肌肉守护者</div>
+      <div class="brand-sub">每天蹲一会儿，腿更稳</div>
+    </div>
+    <button class="iconbtn" id="gearBtn" aria-label="设置">⚙</button>
+  </div>
+
+  <div class="screen" id="screen"></div>
+
+  <div class="tabbar" id="tabbar"></div>
+
+  <div class="sheet-mask" id="sheetMask"><div class="sheet" id="sheet"></div></div>
+  <div class="modal-mask" id="modalMask"><div class="modal" id="modal"></div></div>
+  <div class="countdown" id="countdown">
+    <span id="cdText">3</span>
+    <button id="cdCancel">取消</button>
+  </div>
+  <div class="toast" id="toast"></div>
+</div>
+
+<script>
+/* =========================================================
+   肌肉守护者 · Phase1 原型 V2（2026-10-30 按用户意见改版）
+   改动：①训练页不切模式：上=倒计时档位点一下直接开始，下=自由计时一键开始
+        ②首页显示今日次数与时长 ③倒计时按剩余整分钟播报、自由计时按已练整分钟播报
+        ④测试结束也要确认「算不算」 ⑤柱状图/折线图补纵坐标与刻度线 ⑥仅中文
+   ========================================================= */
+const state = {
+  tab:'train', dir:'b', theme:'system',
+  phase:'idle',             // idle | counting | running | paused
+  mode:'countdown',         // countdown | free
+  targetMs:0, startTs:0, elapsedMs:0, pausedMs:0, pauseTs:0,
+  voiceEnabled:true,
+  lastVoiceMark:0,
+  testRunning:false, testStart:0,
+  trainings:[], tests:[], lastTest:null
+};
+
+/* ---------- 演示数据 ---------- */
+(function seed(){
+  const now = new Date();
+  const plan = [{d:6,m:2},{d:5,m:3},{d:4,m:2},{d:2,m:5},{d:1,m:3},{d:1,m:2},{d:0,m:3}];
+  plan.forEach((p,i)=>{
+    const d = new Date(now.getFullYear(), now.getMonth(), now.getDate()-p.d, 19, 10+i);
+    state.trainings.push({id:'t'+i, mode:'countdown', targetSeconds:p.m*60, seconds:p.m*60,
+      startedAt:d.toISOString(), endedAt:new Date(d.getTime()+p.m*60000).toISOString()});
+  });
+  state.tests.push(
+    {id:'s1', seconds:65, testedAt:new Date(now.getTime()-9*864e5).toISOString()},
+    {id:'s2', seconds:78, testedAt:new Date(now.getTime()-5*864e5).toISOString()},
+    {id:'s3', seconds:92, testedAt:new Date(now.getTime()-2*864e5).toISOString()}
+  );
+})();
+
+/* ---------- 工具 ---------- */
+const dayKey = ts => {const d=new Date(ts);return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`;};
+const mmss = ms => {const s=Math.floor(ms/1000),m=Math.floor(s/60),ss=s%60;return `${String(m).padStart(2,'0')}:${String(ss).padStart(2,'0')}`;};
+const minText = sec => {const m=Math.floor(sec/60),s=Math.round(sec%60);return s?`${m}分${s}秒`:`${m}分钟`;};
+const sum = a => a.reduce((x,y)=>x+y,0);
+const dateText = iso => {
+  const d=new Date(iso), today=dayKey(Date.now()), y=dayKey(new Date(Date.now()-864e5));
+  if (dayKey(d)===today) return '今天';
+  if (dayKey(d)===y) return '昨天';
+  return `${d.getMonth()+1}月${d.getDate()}日`;
+};
+function lastNDays(n){
+  const out=[], now=new Date();
+  for(let i=n-1;i>=0;i--){
+    const d=new Date(now.getFullYear(),now.getMonth(),now.getDate()-i);
+    out.push({key:dayKey(d), date:d, seconds:0});
+  }
+  const map=new Map(out.map(o=>[o.key,o]));
+  state.trainings.forEach(tr=>{const k=dayKey(tr.endedAt);if(map.has(k))map.get(k).seconds+=tr.seconds;});
+  return out;
+}
+
+/* ---------- 语音 ---------- */
+function speak(text){
+  if (!state.voiceEnabled) return;
+  try{
+    if (!('speechSynthesis' in window)){beep();return;}
+    const u=new SpeechSynthesisUtterance(text);
+    u.lang='zh-CN'; u.rate=0.9;
+    const v=speechSynthesis.getVoices().find(x=>x.lang&&x.lang.toLowerCase().startsWith('zh'));
+    if(v)u.voice=v;
+    speechSynthesis.cancel();
+    speechSynthesis.speak(u);
+  }catch(e){beep();}
+}
+function beep(){
+  try{
+    const ctx=new (window.AudioContext||window.webkitAudioContext)();
+    const o=ctx.createOscillator(),g=ctx.createGain();
+    o.frequency.value=880;o.connect(g);g.connect(ctx.destination);
+    g.gain.setValueAtTime(.25,ctx.currentTime);
+    g.gain.exponentialRampToValueAtTime(.001,ctx.currentTime+.25);
+    o.start();o.stop(ctx.currentTime+.25);
+  }catch(e){}
+}
+
+/* ---------- 计时 ---------- */
+let ticker=null, cdTimers=[];
+function startTicker(){
+  stopTicker();
+  ticker=setInterval(()=>{
+    if(state.phase!=='running')return;
+    state.elapsedMs=Date.now()-state.startTs-state.pausedMs;
+    if(state.mode==='countdown'&&state.elapsedMs>=state.targetMs){
+      state.elapsedMs=state.targetMs;
+      finishSession(true);
+      return;
+    }
+    voiceMarks();
+    paintTimer();
+  },200);
+}
+function stopTicker(){if(ticker){clearInterval(ticker);ticker=null;}}
+
+/* 倒计时：每跨过一个剩余整分钟播「还剩N分钟」；正计时：每跨过一个已练整分钟播「已练N分钟」 */
+function voiceMarks(){
+  if(state.mode==='countdown'){
+    const remain=Math.max(0,state.targetMs-state.elapsedMs);
+    const mark=Math.floor(remain/60000);
+    if(mark!==state.lastVoiceMark&&mark>0){state.lastVoiceMark=mark;speak(`还剩${mark}分钟`);}
+  }else{
+    const mark=Math.floor(state.elapsedMs/60000);
+    if(mark!==state.lastVoiceMark&&mark>0){state.lastVoiceMark=mark;speak(`已练${mark}分钟`);}
+  }
+}
+
+function beginSession(mode, minutes){
+  state.mode=mode;
+  state.targetMs=mode==='countdown'?minutes*60000:0;
+  state.elapsedMs=0; state.pausedMs=0;
+  state.lastVoiceMark=mode==='countdown'?Math.ceil(state.targetMs/60000):0;
+  state.phase='counting';
+  render();
+  const words=['三','二','一','开始'];
+  let i=0;
+  const step=()=>{
+    if(state.phase!=='counting')return;
+    if(i<words.length){
+      document.getElementById('cdText').textContent=words[i];
+      document.getElementById('countdown').classList.add('show');
+      speak(words[i]);
+      if(words[i]==='开始')beep();
+      i++;
+      cdTimers.push(setTimeout(step, words[i-1]==='开始'?420:900));
+    }else{
+      document.getElementById('countdown').classList.remove('show');
+      state.phase='running';
+      state.startTs=Date.now();
+      startTicker();
+      requestWakeLock();
+      render();
+    }
+  };
+  step();
+}
+function cancelCountdown(){
+  state.phase='idle';
+  cdTimers.forEach(clearTimeout); cdTimers=[];
+  document.getElementById('countdown').classList.remove('show');
+  try{speechSynthesis.cancel();}catch(e){}
+  toast('已取消');
+  render();
+}
+
+let wakeLock=null;
+async function requestWakeLock(){
+  try{if(state.phase==='running'&&'wakeLock' in navigator)wakeLock=await navigator.wakeLock.request('screen');}catch(e){}
+}
+document.addEventListener('visibilitychange',()=>{
+  if(document.visibilityState==='visible'&&state.phase==='running'){
+    state.elapsedMs=Date.now()-state.startTs-state.pausedMs;
+    paintTimer();
+    requestWakeLock();
+  }
+});
+
+function pauseSession(){if(state.phase!=='running')return;state.phase='paused';state.pauseTs=Date.now();stopTicker();render();}
+function resumeSession(){
+  if(state.phase!=='paused')return;
+  state.pausedMs+=Date.now()-state.pauseTs;state.phase='running';startTicker();render();
+}
+function finishSession(natural){
+  const seconds=Math.max(1,Math.round(state.elapsedMs/1000));
+  state.phase='idle'; stopTicker();
+  if(wakeLock){wakeLock.release().catch(()=>{});wakeLock=null;}
+  speak('恭喜你完成训练');
+  beep();
+  openConfirm('train',seconds,natural);
+}
+
+/* ---------- 确认弹窗（训练 / 测试共用） ---------- */
+function openConfirm(kind,seconds,natural){
+  const m=document.getElementById('modal');
+  const title=kind==='train'?'这次练完了吗？':'这次测试算满吗？';
+  const sub=kind==='train'
+    ? `${state.mode==='countdown'?'倒计时':'自由计时'} · ${minText(seconds)}`
+    : `测试用时 · ${minText(seconds)}`;
+  m.innerHTML=`
+    <h3>${title}</h3>
+    <p>${sub}</p>
+    <div class="modal-actions">
+      <button class="btn ghost" id="mNo">不算</button>
+      <button class="btn" id="mYes">算数</button>
+    </div>`;
+  document.getElementById('modalMask').classList.add('show');
+  document.getElementById('mYes').onclick=()=>{
+    if(kind==='train')saveTraining(seconds); else saveTest(seconds);
+    closeModal();
+  };
+  document.getElementById('mNo').onclick=()=>{
+    closeModal();
+    toast(kind==='train'?'已丢弃，这次不算':'已丢弃，这次测试不算');
+  };
+}
+function closeModal(){document.getElementById('modalMask').classList.remove('show');render();}
+
+function saveTraining(seconds){
+  const now=new Date();
+  state.trainings.push({id:'t'+Date.now(),mode:state.mode,
+    targetSeconds:state.mode==='countdown'?Math.round(state.targetMs/1000):undefined,
+    seconds,startedAt:new Date(now.getTime()-seconds*1000).toISOString(),endedAt:now.toISOString()});
+  const todaySec=sum(state.trainings.filter(x=>dayKey(x.endedAt)===dayKey(now)).map(x=>x.seconds));
+  toast(`已记录，今天累计 ${Math.round(todaySec/60)} 分钟`);
+}
+function saveTest(seconds){
+  state.tests.push({id:'s'+Date.now(),seconds,testedAt:new Date().toISOString()});
+  state.lastTest=seconds;
+  toast('已记录本次测试');
+}
+
+/* ---------- 测试计时 ---------- */
+let testTimer=null;
+function startTest(){
+  state.testRunning=true; testStart=Date.now();
+  if(testTimer)clearInterval(testTimer);
+  testTimer=setInterval(()=>{
+    const el=document.getElementById('testTimer');
+    if(el)el.textContent=mmss(Date.now()-testStart);
+  },200);
+  speak('开始');
+  render();
+}
+function endTest(){
+  const seconds=Math.max(1,Math.round((Date.now()-testStart)/1000));
+  clearInterval(testTimer); testTimer=null;
+  state.testRunning=false;
+  speak('测试结束');
+  openConfirm('test',seconds,false);
+}
+
+/* ---------- 渲染 ---------- */
+function todayStats(){
+  const list=state.trainings.filter(x=>dayKey(x.endedAt)===dayKey(Date.now()));
+  return {count:list.length, seconds:sum(list.map(x=>x.seconds))};
+}
+
+function render(){
+  renderTabs();
+  const s=document.getElementById('screen');
+  if(state.tab==='train')s.innerHTML=trainHTML();
+  else if(state.tab==='test')s.innerHTML=testHTML();
+  else s.innerHTML=statsHTML();
+  bindScreen();
+  const running=state.phase==='running'||state.phase==='paused'||state.phase==='counting';
+  document.getElementById('tabbar').classList.toggle('hidden',running);
+}
+
+function renderTabs(){
+  const icons={
+    train:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 17h16"/><path d="M7 17V9l5-4 5 4v8"/></svg>',
+    test:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="8"/><path d="M12 8v4l3 2"/></svg>',
+    stats:'<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 19V9M10 19V5M16 19v-6M22 19V11"/></svg>'
+  };
+  const names={train:'训练',test:'测试',stats:'统计'};
+  document.getElementById('tabbar').innerHTML=['train','test','stats'].map(k=>
+    `<button class="tab ${state.tab===k?'on':''}" data-tab="${k}">${icons[k]}<span>${names[k]}</span></button>`).join('');
+  document.querySelectorAll('.tab').forEach(b=>b.onclick=()=>{state.tab=b.dataset.tab;render();});
+}
+
+function trainHTML(){
+  const {count,seconds}=todayStats();
+  /* 进行中：整页只留计时与操作 */
+  if(state.phase==='running'||state.phase==='paused'){
+    const remain=state.mode==='countdown'?Math.max(0,state.targetMs-state.elapsedMs):state.elapsedMs;
+    return `
+      <div class="card" style="margin-top:8px">
+        <div class="timerbox">
+          <div class="timer-label">${state.mode==='countdown'?'倒计时 · 剩余':'自由计时 · 已练'}</div>
+          <div class="timer" id="timerText">${mmss(remain)}</div>
+        </div>
+      </div>
+      <div style="height:18px"></div>
+      ${state.phase==='running'
+        ? `<button class="btn ghost" id="pauseBtn">暂停</button>`
+        : `<button class="btn soft" id="resumeBtn">继续</button>`}
+      <div style="height:12px"></div>
+      <button class="btn danger" id="endBtn">结束</button>
+      <div class="hint">结束后会问你「这次练完了吗」，选「算数」才计入统计</div>`;
+  }
+
+  return `
+    <div class="today">
+      <div>
+        <div class="k">今天</div>
+        <div class="v">${count} 次 · ${Math.round(seconds/60)} 分钟</div>
+      </div>
+    </div>
+
+    <div class="h2">倒计时训练</div>
+    <div class="small muted" style="margin-bottom:10px">点一下时长就开始，不用再点开始按钮</div>
+    <div class="chips">
+      ${[1,2,3,4,5,6,7,8,9,10].map(m=>`<button class="chip" data-min="${m}">${m}<span class="unit">分钟</span></button>`).join('')}
+    </div>
+
+    <div class="h2">自由计时</div>
+    <div class="card">
+      <div class="free-box">
+        <div class="free-time">00:00</div>
+        <div class="small muted" style="max-width:45%">练到想停，回来点结束</div>
+      </div>
+      <div style="height:12px"></div>
+      <button class="btn" id="startFreeBtn">开始自由计时</button>
+    </div>
+
+    <button class="btn ghost" id="safetyBtn" style="margin-top:16px">安全提醒 ›</button>
+    <div class="hint" id="safetyHint" style="display:none">量力而行，膝或腰出现疼痛请立即停止；地面保持干燥防滑，旁边最好有可扶的椅背。</div>`;
+}
+
+function testHTML(){
+  const last=state.tests[state.tests.length-1];
+  const best=state.tests.length?Math.max(...state.tests.map(x=>x.seconds)):0;
+  return `
+    <div class="h2" style="margin-top:6px">摸底测试</div>
+    <div class="small muted">点开始后尽全力蹲，撑不住就点结束，这段时长就是你的成绩。</div>
+    <div class="card" style="margin-top:14px">
+      <div class="timerbox">
+        <div class="timer" id="testTimer">${state.testRunning?'00:00':(last?mmss(last.seconds*1000):'00:00')}</div>
+        <div class="timer-label">${state.testRunning?'测试中 · 已用':'上次成绩'}</div>
+      </div>
+    </div>
+    <div style="height:14px"></div>
+    ${state.testRunning
+      ? `<button class="btn danger" id="testEndBtn">结束测试</button>`
+      : `<button class="btn" id="testStartBtn">开始测试</button>`}
+    <div class="statgrid" style="grid-template-columns:1fr 1fr;margin-top:14px">
+      <div class="card stat"><div class="k">上次成绩</div><div class="v">${last?mmss(last.seconds*1000):'--:--'}</div></div>
+      <div class="card stat"><div class="k">最好成绩</div><div class="v">${best?mmss(best*1000):'--:--'}</div></div>
+    </div>
+    <div class="h2">成绩趋势</div>
+    ${state.tests.length>=2?lineChart(state.tests):`<div class="card empty">再测一次，就能看到成绩趋势。</div>`}
+    <div class="h2">测试记录</div>
+    ${state.tests.length?`<div class="list">${[...state.tests].reverse().map(x=>`
+      <div class="item"><div class="l"><div class="t">${dateText(x.testedAt)}</div><div class="s">摸底测试</div></div>
+      <div class="r">${mmss(x.seconds*1000)}</div></div>`).join('')}</div>`
+      :`<div class="card empty">还没有测试记录，先测一次看看现在的能力。</div>`}`;
+}
+
+function statsHTML(){
+  const {count,seconds}=todayStats();
+  const d7=lastNDays(7), d30=lastNDays(30);
+  const s7=sum(d7.map(x=>x.seconds)), s30=sum(d30.map(x=>x.seconds));
+  return `
+    <div class="h2" style="margin-top:6px">练习情况</div>
+    <div class="statgrid">
+      <div class="card stat"><div class="k">今日练习</div>
+        <div><span class="v">${Math.round(seconds/60)}</span><span class="u">分钟 · ${count} 次</span></div></div>
+      <div class="statgrid" style="grid-template-columns:1fr 1fr;gap:12px">
+        <div class="card stat"><div class="k">近 7 天</div><div><span class="v">${Math.round(s7/60)}</span><span class="u">分钟</span></div></div>
+        <div class="card stat"><div class="k">近 30 天</div><div><span class="v">${Math.round(s30/60)}</span><span class="u">分钟</span></div></div>
+      </div>
+    </div>
+    <div class="h2">近 7 天每日时长</div>
+    ${barChart(d7,'7')}
+    <div class="h2">近 30 天每日时长</div>
+    ${barChart(d30,'30')}
+    <div class="h2">训练记录</div>
+    ${state.trainings.length?`<div class="list">${[...state.trainings].sort((a,b)=>b.endedAt.localeCompare(a.endedAt)).map(x=>`
+      <div class="item"><div class="l"><div class="t">${dateText(x.endedAt)}</div>
+      <div class="s">${x.mode==='countdown'?'倒计时':'自由计时'}</div></div>
+      <div class="r">${minText(x.seconds)}</div></div>`).join('')}</div>`
+      :`<div class="card empty">还没有训练记录，完成第一次训练就会出现在这里。</div>`}`;
+}
+
+/* 柱状图：有纵坐标（分钟刻度）＋ 3 条横向刻度线 */
+function barChart(rows,n){
+  if(!state.trainings.length) return `<div class="card empty">还没有训练数据</div>`;
+  const maxSec=Math.max(60,...rows.map(r=>r.seconds));
+  const maxMin=Math.max(5,Math.ceil(maxSec/60/5)*5);      // 刻度取整到 5 分钟
+  const bars=rows.map(r=>{
+    const h=Math.round((r.seconds/60/maxMin)*100);
+    const d=r.date.getDate();
+    return `<div class="bar"><i style="height:${h}%;${r.seconds?'':'min-height:3px;background:var(--track)'}"></i></div>`;
+  }).join('');
+  const labels=rows.map(r=>`<span>${r.date.getDate()}</span>`).join('');
+  return `
+    <div class="card">
+      <div class="chart">
+        <div class="yaxis"><span>${maxMin}分</span><span>${Math.round(maxMin/2)}分</span><span>0</span></div>
+        <div class="plot">
+          <div class="line" style="top:0"></div>
+          <div class="line" style="top:50%"></div>
+          <div class="line base" style="top:100%"></div>
+          <div class="bars">${bars}</div>
+        </div>
+      </div>
+      <div class="xlabels" style="padding-left:46px">${labels}</div>
+      <div class="legend">纵轴：分钟${n==='30'?'（每格为一天，日期单数标注）':''}</div>
+    </div>`;
+}
+
+/* 折线图：补纵坐标刻度 */
+function lineChart(tests){
+  const W=300,H=150,padL=46,padR=14,padT=18,padB=22;
+  const vals=tests.map(x=>x.seconds);
+  const maxV=Math.max(...vals), minV=Math.min(...vals);
+  const span=Math.max(15,maxV-minV);
+  const pts=tests.map((x,i)=>{
+    const px=padL+(W-padL-padR)*(tests.length===1?0.5:i/(tests.length-1));
+    const py=padT+(H-padT-padB)*(1-(x.seconds-minV)/span);
+    return [px,py];
+  });
+  const path=pts.map((p,i)=>`${i?'L':'M'}${p[0].toFixed(1)} ${p[1].toFixed(1)}`).join(' ');
+  return `
+    <div class="card" style="padding:10px">
+      <svg viewBox="0 0 ${W} ${H}" style="width:100%;display:block">
+        <line x1="${padL}" y1="${padT}" x2="${W-padR}" y2="${padT}" stroke="var(--border)" stroke-dasharray="4 4"/>
+        <line x1="${padL}" y1="${(padT+H-padB)/2}" x2="${W-padR}" y2="${(padT+H-padB)/2}" stroke="var(--border)" stroke-dasharray="4 4"/>
+        <line x1="${padL}" y1="${H-padB}" x2="${W-padR}" y2="${H-padB}" stroke="var(--border)" stroke-width="1.5"/>
+        <text x="${padL-6}" y="${padT+5}" text-anchor="end" font-size="13" fill="var(--text-2)">${mmss(maxV*1000)}</text>
+        <text x="${padL-6}" y="${(padT+H-padB)/2+5}" text-anchor="end" font-size="13" fill="var(--text-2)">${mmss((maxV+minV)/2*1000)}</text>
+        <text x="${padL-6}" y="${H-padB+5}" text-anchor="end" font-size="13" fill="var(--text-2)">${mmss(minV*1000)}</text>
+        <path d="${path}" fill="none" stroke="var(--primary)" stroke-width="3" stroke-linejoin="round"/>
+        ${pts.map((p,i)=>`<circle cx="${p[0]}" cy="${p[1]}" r="5" fill="var(--primary)"/>`).join('')}
+      </svg>
+      <div class="legend">纵轴：测试用时（分:秒），共 ${tests.length} 次</div>
+    </div>`;
+}
+
+function paintTimer(){
+  const el=document.getElementById('timerText');
+  if(!el)return;
+  const remain=state.mode==='countdown'?Math.max(0,state.targetMs-state.elapsedMs):state.elapsedMs;
+  el.textContent=mmss(remain);
+}
+
+function bindScreen(){
+  const $=id=>document.getElementById(id);
+  document.querySelectorAll('[data-min]').forEach(b=>b.onclick=()=>beginSession('countdown',+b.dataset.min));
+  if($('startFreeBtn'))$('startFreeBtn').onclick=()=>beginSession('free');
+  if($('pauseBtn'))$('pauseBtn').onclick=pauseSession;
+  if($('resumeBtn'))$('resumeBtn').onclick=resumeSession;
+  if($('endBtn'))$('endBtn').onclick=()=>finishSession(false);
+  if($('safetyBtn'))$('safetyBtn').onclick=()=>{const h=$('safetyHint');h.style.display=h.style.display==='none'?'block':'none';};
+  if($('testStartBtn'))$('testStartBtn').onclick=startTest;
+  if($('testEndBtn'))$('testEndBtn').onclick=endTest;
+}
+
+/* ---------- 倒计时取消 ---------- */
+document.getElementById('cdCancel').onclick=cancelCountdown;
+
+/* ---------- 设置 ---------- */
+document.getElementById('gearBtn').onclick=()=>openSettings();
+function openSettings(){
+  const sh=document.getElementById('sheet');
+  sh.innerHTML=`
+    <div class="h2" style="margin-top:0">设置</div>
+    <div class="setting"><div>主题</div>
+      <div class="row">
+        ${[['system','跟随系统'],['light','浅色'],['dark','深色']].map(([k,label])=>
+          `<button class="chip ${state.theme===k?'on':''}" data-theme2="${k}" style="min-height:48px;padding:0 14px;font-size:17px">${label}</button>`).join('')}
+      </div></div>
+    <div class="setting"><div>语音提示</div>
+      <button class="switch ${state.voiceEnabled?'on':''}" id="voiceSwitch" aria-label="语音开关"><span></span></button></div>
+    <div class="setting"><div>安全提醒</div><div class="small muted" style="max-width:62%;text-align:right">量力而行，膝或腰疼痛立即停止，地面防滑。</div></div>
+    <div class="setting"><div>关于 · 版本</div><div class="small muted">V1.0.0（原型）</div></div>
+    <div style="height:14px"></div>
+    <button class="btn ghost" id="clearBtn">清空所有记录</button>
+    <div style="height:10px"></div>
+    <button class="btn soft" id="closeSheet">关闭</button>`;
+  document.getElementById('sheetMask').classList.add('show');
+  document.querySelectorAll('[data-theme2]').forEach(b=>b.onclick=()=>{state.theme=b.dataset.theme2;applyTheme();openSettings();});
+  document.getElementById('voiceSwitch').onclick=()=>{
+    state.voiceEnabled=!state.voiceEnabled;
+    toast(state.voiceEnabled?'语音已开启':'语音已关闭');
+    openSettings();
+  };
+  document.getElementById('closeSheet').onclick=()=>document.getElementById('sheetMask').classList.remove('show');
+  document.getElementById('clearBtn').onclick=()=>{
+    if(confirm('确认清空全部训练与测试记录？')&&confirm('再确认一次：清空后无法恢复。')){
+      state.trainings=[];state.tests=[];toast('已清空');render();openSettings();
+    }
+  };
+}
+document.getElementById('sheetMask').onclick=e=>{if(e.target.id==='sheetMask')document.getElementById('sheetMask').classList.remove('show');};
+
+/* ---------- 主题 ---------- */
+function applyTheme(){document.body.dataset.theme=state.theme;}
+
+/* ---------- toast ---------- */
+let toastTimer=null;
+function toast(msg){
+  const el=document.getElementById('toast');
+  el.textContent=msg;el.classList.add('show');
+  clearTimeout(toastTimer);
+  toastTimer=setTimeout(()=>el.classList.remove('show'),1800);
+}
+
+render();
+</script>
+</body>
+</html>

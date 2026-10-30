@@ -1,0 +1,1 @@
+{"task": "T1", "project": "p", "date": "2026-10-11", "role": "qa", "model": "codex/gpt-6-luna", "result": "PASS", "rework": 0, "escalated": "NO", "escalation_reason": null, "tokens": null, "cost_cny": null}

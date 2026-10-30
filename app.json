@@ -1,0 +1,34 @@
+{
+  "expo": {
+    "name": "肌肉守护者",
+    "slug": "muscle-keeper",
+    "version": "0.1.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "userInterfaceStyle": "automatic",
+    "android": {
+      "package": "com.musclekeeper.app",
+      "adaptiveIcon": {
+        "backgroundColor": "#E4F1E8",
+        "foregroundImage": "./assets/android-icon-foreground.png"
+      },
+      "predictiveBackGestureEnabled": false
+    },
+    "web": {
+      "favicon": "./assets/favicon.png"
+    },
+    "plugins": [
+      [
+        "expo-splash-screen",
+        {
+          "image": "./assets/splash-icon.png",
+          "backgroundColor": "#F7F4EC",
+          "resizeMode": "contain"
+        }
+      ]
+    ],
+    "experiments": {
+      "baseUrl": "."
+    }
+  }
+}

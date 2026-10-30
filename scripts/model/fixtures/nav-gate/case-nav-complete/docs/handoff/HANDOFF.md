@@ -1,0 +1,1 @@
+- PLAN_VERSION：以 `docs/pm/PRODUCT_PLAN_V1.0.md` 为需求真源

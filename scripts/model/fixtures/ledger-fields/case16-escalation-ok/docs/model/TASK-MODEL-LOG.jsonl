@@ -1,0 +1,1 @@
+{"task": "T1", "project": "p", "date": "2026-10-11", "role": "senior-expert", "model": "codex/gpt-6.1-sol", "result": "PASS", "rework": 2, "escalated": "YES", "escalation_reason": "supervisor 打回 2 次自动升 senior", "tokens": null, "cost_cny": null, "chain_status": "OPEN"}

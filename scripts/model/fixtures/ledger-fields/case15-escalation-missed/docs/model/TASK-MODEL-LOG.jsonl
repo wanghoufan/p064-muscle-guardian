@@ -1,0 +1,1 @@
+{"task": "T1", "project": "p", "date": "2026-10-11", "role": "builder", "model": "codex/gpt-6.1-sol", "result": "FAIL", "rework": 2, "escalated": "NO", "escalation_reason": null, "tokens": null, "cost_cny": null}
