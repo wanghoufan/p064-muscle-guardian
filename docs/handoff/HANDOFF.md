@@ -17,7 +17,7 @@
 
 ## §1 当前进展
 
-- Captured at：2026-10-30 16:30
+- Captured at：2026-10-30 17:15
 - PLAN_VERSION：以 `docs/pm/PRODUCT_PLAN.md` 为需求真源（当前 V1.1）
 - PROJECT_PHASE：DEVELOP（用户已下「开发」令；Phase1 Gate 记 IN_PROGRESS，按连续推进执行）
 - PLAN_READINESS_SCORE：88
@@ -25,19 +25,19 @@
 - DEV_BASELINE：0.1.0（`dist` 16:19 重建，SW cache=muscle-keeper-9adbbfe630e3023b）
 - CHANGE_REQUEST：NONE
 - Stage ID：Phase2 首轮实现（064-ing-肌肉守护者）
-- 剩 P0：①安装到主屏未完成（Chrome 菜单「安装并创建快捷方式」未点成，无 WebAPK）②语音「可听见」未经人耳确认 ③AC-23 无中文语音降级未实现（唯一 FAIL）④四项决策已拍板但发布尚未执行 ⑤首次发布未签收
+- 剩 P0：①交付目标改为**小米自带浏览器**（已装成 PWA、语音已修、待用户人耳确认）②AC-23 无中文语音降级随语音改造已实质解决，待矩阵改判 ③图标仍为方向②，A1 定的是方向① ④首次发布未签收
 - 当前 Task：BUG-001 已闭环＋Web QA 回归＋真机 QA 完成；用户四项已拍板（A1/D1/E1+E2 全授权/F1）
-- 本轮已完成：①BUG-001 修复（根因：`setMode` 引用不稳→hydrate 反复重跑回滚偏好）②BUG-002 `.pwa` 后缀、BUG-003 长按选中菜单 一并修 ③Neo 后台回归（三态主题+刷新持久化+训练/测试/统计+离线产物）④真机 QA：Redmi 22101316C 14 项，13 PASS / 1 未完成（安装到主屏），详见 `docs/qa/真机QA-结果-2026-10-30.md` ⑤验收矩阵回填 13 PASS / 1 FAIL / 1 NOT_TESTED / 29 PARTIAL
+- 本轮已完成：⓪语音方案改造：小米浏览器无 Web Speech API → 改为预置 mp3（46 条，SW 预缓存），实测出声 ①BUG-001 修复（根因：`setMode` 引用不稳→hydrate 反复重跑回滚偏好）②BUG-002 `.pwa` 后缀、BUG-003 长按选中菜单 一并修 ③Neo 后台回归（三态主题+刷新持久化+训练/测试/统计+离线产物）④真机 QA：Redmi 22101316C 14 项，13 PASS / 1 未完成（安装到主屏），详见 `docs/qa/真机QA-结果-2026-10-30.md` ⑤验收矩阵回填 13 PASS / 1 FAIL / 1 NOT_TESTED / 29 PARTIAL
 
 ## §2 下一步
 
-- 下一步：线上已发布 `https://wanghoufan.github.io/p064-muscle-guardian/`（Pages workflow 构建，HTTP 200，SW 已注册并被接管）→ 等用户在手机装一次并签收；随后补 AC-23 降级、安装到主屏取证、360×640 窄屏、图标方向①重出
+- 下一步：小米自带浏览器路径已通（装机＋语音＋整分钟播报）。等用户人耳确认后签收；随后按 A1 重出图标方向①、补 360×640 窄屏、矩阵 AC-23 改判
 - 已拍板：A1 肌肉守护者/MuscleKeeper（图标方向①腿形护盾，现网图标仍为②，待重出）/ D1 暂不做导出 / E1+E2 全授权（commit、push origin/main、Pages 工作流、public 仓库）/ F1 Redmi（QA 机 22101316C）
 - permission_request：（无）
 
 ## §3 未完成
 
-- 未闭环缺陷：仅 AC-23（无中文语音时无蜂鸣降级，`speech.ts` 静默吞异常）；BUG-001/002/003 已 CLOSED
+- 未闭环缺陷：无 P0 未闭环（BUG-001/002/003/004 全 CLOSED）；矩阵 AC-23 待按新语音方案改判
 - 未闭环评审意见：无（未到交付单元边界，未派 code-reviewer/qa/supervisor）
 - 产品验收：`docs/qa/产品验收追踪矩阵.md` 已建并回填（13 PASS／1 FAIL／1 NOT_TESTED／29 PARTIAL）；真机证据 `docs/qa/shots/`
 - 用户签收：首次发布 → 待签收（依据：真机安装 + 一次倒计时训练 + 一次测试 + 查看统计）
