@@ -13,6 +13,7 @@
 | 未决风险 | `docs/risks.md`（已建，R1–R8） |
 | 踩坑与浏览器 QA 规矩 | `agent.md`（已建） |
 | 经验条目 | `经验一句话.md` |
+| release 签名密钥/密码 | 本地 `android-apk/release.keystore` + `android-apk/.keystore-pass`（均 gitignore 不入库；`build-release.sh` 自动读取；**需自行备份，丢了无法更新已发布 App**） |
 | 治理细则 | `docs/sop/governance-{scope,execution-modes,dispatch,ledger}.md` |
 
 ## §1 当前进展

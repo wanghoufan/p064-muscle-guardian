@@ -51,6 +51,8 @@ Thumbs.db
 # Android 打包产物（源在 android-apk/，产物不入库）
 android-apk/build/
 android-apk/*.apk
+# release keystore 密码（含密钥密码，本地专用，绝不入库）
+android-apk/.keystore-pass
 
 # CF 凭据
 .local/
