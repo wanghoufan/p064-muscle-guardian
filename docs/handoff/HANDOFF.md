@@ -31,7 +31,7 @@
 
 ## §2 下一步
 
-- 下一步：E1+E2 已获授权 → commit + push main + Pages 工作流（`https://wanghoufan.github.io/p064-muscle-guardian/`，国内访问不稳，长期用建议切 EdgeOne Pages）→ 用户手机装一次并签收；随后补 AC-23 降级与 360×640 窄屏
+- 下一步：线上已发布 `https://wanghoufan.github.io/p064-muscle-guardian/`（Pages workflow 构建，HTTP 200，SW 已注册并被接管）→ 等用户在手机装一次并签收；随后补 AC-23 降级、安装到主屏取证、360×640 窄屏、图标方向①重出
 - 已拍板：A1 肌肉守护者/MuscleKeeper（图标方向①腿形护盾，现网图标仍为②，待重出）/ D1 暂不做导出 / E1+E2 全授权（commit、push origin/main、Pages 工作流、public 仓库）/ F1 Redmi（QA 机 22101316C）
 - permission_request：（无）
 
@@ -42,7 +42,7 @@
 - 产品验收：`docs/qa/产品验收追踪矩阵.md` 已建并回填（13 PASS／1 FAIL／1 NOT_TESTED／29 PARTIAL）；真机证据 `docs/qa/shots/`
 - 用户签收：首次发布 → 待签收（依据：真机安装 + 一次倒计时训练 + 一次测试 + 查看统计）
 - docs 落盘清单：`docs/pm/PRODUCT_PLAN.md`、`docs/design/prototype/index.html`、`docs/handoff/HANDOFF.md`、`agent.md`（本项目新建）；应用代码在本仓库根
-- 收尾一笔：Neo 测试标签 page 15 关闭；8800 静态服务仍在跑（真机 QA 需 `adb reverse`，用完停）；`adb -s indq5xfi6hovay4d forward tcp:9223` 已建（用完移除）
+- 收尾一笔：Neo 测试标签 page 15/20 已关；8800 静态服务已停；`adb reverse tcp:8800` 与 `forward tcp:9223` 已移除；仓库已转 public 并开 Pages（免费套餐 Pages 不支持 private）
 
 ## §4 红线
 
