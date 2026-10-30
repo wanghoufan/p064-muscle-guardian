@@ -36,7 +36,9 @@ export function MinuteChip({ minutes, selected, onPress }: Props) {
 const styles = StyleSheet.create({
   chip: {
     flex: 1,
-    minWidth: 56,
+    flexBasis: 0,
+    minWidth: 0, // 窄视口（微信 webview）下必须可收缩，否则 5 列整体横向溢出
+    paddingHorizontal: 2,
     minHeight: 52,
     borderWidth: 1,
     borderRadius: radius.chip,

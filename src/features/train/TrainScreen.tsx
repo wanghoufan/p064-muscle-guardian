@@ -215,7 +215,7 @@ const styles = StyleSheet.create({
   todayLabel: { marginBottom: spacing.xs },
   todayValue: { letterSpacing: -0.5 },
   hint: { marginBottom: spacing.md },
-  chipRow: { flexDirection: 'row', gap: 8, marginBottom: spacing.sm },
+  chipRow: { flexDirection: 'row', gap: 8, marginBottom: spacing.sm, flexWrap: 'wrap' },
   freeRow: { flexDirection: 'row', alignItems: 'center' },
   freeHint: { flex: 1, marginLeft: spacing.md },
   freeSpacer: { height: spacing.md },

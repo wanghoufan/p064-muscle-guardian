@@ -44,13 +44,14 @@ fs.writeFileSync(path.join(dist, 'manifest.webmanifest'), JSON.stringify(manifes
 const htmlPath = path.join(dist, 'index.html');
 let html = fs.readFileSync(htmlPath, 'utf8');
 html = html.replace('<html lang="en">', '<html lang="zh-CN">');
+html = html.replace('shrink-to-fit=no', 'shrink-to-fit=no, viewport-fit=cover');
 html = html.replace(
   '</head>',
   '  <link rel="manifest" href="./manifest.webmanifest" />\n' +
     '  <link rel="apple-touch-icon" href="./apple-touch-icon.png" />\n' +
     `  <meta name="theme-color" content="${BG}" />\n` +
     '  <meta name="apple-mobile-web-app-title" content="肌肉守护者" />\n' +
-    '  <style>html,body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent}</style>\n' +
+    '  <style>html,body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none;-webkit-tap-highlight-color:transparent;max-width:100%;overflow-x:hidden}#root{max-width:100%;overflow-x:hidden}</style>\n' +
     '</head>',
 );
 html = html.replace(
