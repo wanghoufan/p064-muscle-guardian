@@ -2,6 +2,8 @@
 
 > 上限 ≤100 行 / ≤8KB。事实进 `docs/architecture-facts.md`，风险进 `docs/risks.md`，踩坑进 `agent.md`，本文件只留指针与现势。
 
+> 🆕 **新接手本仓库开发的智能体，请先读 `docs/handoff/ONBOARD-NEXT.md`（2 分钟速览 + 可直接复制的接续提示词）。**
+
 ## §0 常驻指针
 
 | 要什么 | 去哪 |
