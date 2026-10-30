@@ -20,6 +20,15 @@
 - 音频文件由 `scripts/gen-voice.mjs` 生成（macOS `say -v Tingting -r 165` + ffmpeg，24kHz 单声道），46 条共约 476KB。
 - 回归闸：`src/services/__tests__/speech.test.ts`（48 例映射）＋ `scripts/check-voice.mjs`（缺文件即构建失败）。
 
+## Android 安装包（备用交付通道）
+
+- 目的：不依赖任何浏览器菜单，给老人一个**真正的图标 App**，且完全离线。
+- 形态：WebView 壳 + 网页内嵌。`android-apk/`（Manifest / MainActivity / res / build.sh），`assets/www` 直接拷 `dist/`。
+- 构建：`./android-apk/build.sh`（**不用 Gradle**：aapt2 编资源 → javac → d8 → zipalign → apksigner，签名用 `~/.android/debug.keystore`，约 5 秒，产物 ~590KB）。
+- 依赖：JDK 17 + `~/Library/Android/sdk`（build-tools 37.0.0 / platforms android-34）。
+- 特性：`setMediaPlaybackRequiresUserGesture(false)`（否则语音要点两次）、DOM storage 开（记录存本机）、file:// 加载 → **SW 不生效但也不需要**（资源全在包内）。
+- 改网页后必须重新执行 `npm run build && ./android-apk/build.sh` 才能进包。
+
 ## 部署
 
 - 仓库 `github.com/wanghoufan/p064-muscle-guardian`（**public**，免费套餐 Pages 不支持 private），`.github/workflows/pages.yml` push main 即构建发布。
