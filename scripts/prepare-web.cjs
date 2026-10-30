@@ -27,8 +27,11 @@ const manifest = {
   dir: 'ltr',
   start_url: START,
   scope: START,
-  display: 'standalone',
-  display_override: ['standalone', 'minimal-ui'],
+  // 交付浏览器是小米自带浏览器：它把 display:standalone 视为「可安装 PWA」并接管安装，
+  // 结果菜单里的「添加到桌面」被置灰（点不了）。实测 display:browser 时该入口恢复可用，
+  // 装上后仍有图标、SW 离线照旧，代价是打开时带地址栏。
+  display: process.env.PWA_DISPLAY || 'browser',
+  ...(process.env.PWA_DISPLAY === 'standalone' ? { display_override: ['standalone', 'minimal-ui'] } : {}),
   orientation: 'portrait',
   background_color: BG,
   theme_color: BG,
