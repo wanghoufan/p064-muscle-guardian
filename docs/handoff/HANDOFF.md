@@ -13,7 +13,7 @@
 | 未决风险 | `docs/risks.md`（已建，R1–R8） |
 | 踩坑与浏览器 QA 规矩 | `agent.md`（已建） |
 | 经验条目 | `经验一句话.md` |
-| release 签名密钥/密码 | 本地 `android-apk/release.keystore` + `android-apk/.keystore-pass`（均 gitignore 不入库；`build-release.sh` 自动读取；**需自行备份，丢了无法更新已发布 App**） |
+| release 签名密钥/密码 | 本地 `android-apk/release.keystore` + `android-apk/.keystore-pass`（均 gitignore 不入库；`build-release.sh` 自动读取；**密码只存在于本机该文件＋本段对话，任何文档/仓库均不含明文，需自行离线备份，丢了无法更新已发布 App**） |
 | 治理细则 | `docs/sop/governance-{scope,execution-modes,dispatch,ledger}.md` |
 
 ## §1 当前进展
@@ -29,6 +29,7 @@
 - 剩 P0：①用户人耳确认「三二一开始／整分钟播报」后签收 ②图标仍为方向②，A1 定的是方向① ③AC-33 冻结记录未产出（矩阵唯一 NOT_TESTED）
 - 当前 Task：BUG-001 已闭环＋Web QA 回归＋真机 QA 完成；用户四项已拍板（A1/D1/E1+E2 全授权/F1）
 - 本轮已完成：⓪语音方案改造：小米浏览器无 Web Speech API → 改为预置 mp3（46 条，SW 预缓存），实测出声 ①BUG-001 修复（根因：`setMode` 引用不稳→hydrate 反复重跑回滚偏好）②BUG-002 `.pwa` 后缀、BUG-003 长按选中菜单 一并修 ③Neo 后台回归（三态主题+刷新持久化+训练/测试/统计+离线产物）④真机 QA：Redmi 22101316C 14 项，13 PASS / 1 未完成（安装到主屏），详见 `docs/qa/真机QA-结果-2026-10-30.md` ⑥验收矩阵回填 14 PASS / 0 FAIL / 1 NOT_TESTED / 29 PARTIAL（AC-23 随语音改造改判）⑦语音加回归闸：48 例映射测试＋构建前 `check-voice`（46 条 mp3 缺一即失败）⑨修窄屏溢出（BUG-006：档位 minWidth 写死致微信里右侧被裁）⑪修「添加到桌面」置灰（BUG-007，曾误判为 display 问题，已更正）——真因＝**小米浏览器只放行根路径站点**（子路径必灰，提词器 pages.dev 根域可装为反证）→ 新增 Cloudflare Pages 根路径部署（`npm run deploy:cf`）⑩新增 **Android APK 通道**（`android-apk/`，WebView 内嵌 dist，无 Gradle，`./android-apk/build.sh` 出 ~590KB 安装包，彻底绕开浏览器菜单）⑧按用户要求加「数据清零」：设置→数据区，训练记录/测试记录分别可清＋清空全部，两步确认，**只清记录不动主题与语音设置**（原「清空所有记录」会连设置一起重置）
+- 收尾发布（2026-10-30 晚）：跑通 `github-readme-maintainer-local-zh` + `github-homepage-showcase-local-zh` 两 skill。① README 占位符→应用说明（单语中文，因 `strings.ts` 写「不做英文」走 `--no-en`；含 4 张真实界面图：训练/测试/统计/设置，取自 `docs/qa/shots/`，其中 web-* 为本晚用 Chrome 真实运行抓取；`validate_readme.py`→`DOCUMENTATION_READY`）。② GitHub About 三格填好：Description=`【肌肉守护者】给长辈用的深蹲训练小工具…`（59字）、10 个 topics、homepageUrl=`https://p064-muscle-guardian.pages.dev`（已验证 200）。仓库实际 **public**（旧占位符写的 private 已过时）。③ 主页 README（`wanghoufan/wanghoufan`）健康分类加本作，总数 37→38，双语 README.md/README.en.md 同步，`parity_check.py`→`PARITY-OK`；链接指向已上线 pages.dev。④ 个人站 `p003-houfan-xuezhang-site`：`app/content.ts` 加条目（slug=`muscle-guardian`，`cover`=`/projects/muscle-guardian.png` 已拷入 `public/projects/` 并 CI 通过）。⑤ 已建 GitHub Release **`v0.1.0`** 并上传 **release 签名 APK** `muscle-guardian-v0.1.0.apk`（中文文件名经 `gh` 会降级成 `default.apk`，故用 ASCII 名；密钥见 §0）。⑥ 密钥改走本地 gitignore 文件 `android-apk/.keystore-pass`，`build-release.sh` 自动读取，无需手动输密码（详见 a82dbff）。
 
 ## §2 下一步
 
@@ -61,6 +62,7 @@
 - 2026-10-30：Pages 上线；用户指定交付目标＝小米自带浏览器；实测其无 Web Speech API（BUG-004）→ 语音改预置 mp3 并加回归闸；小米浏览器实测出声＋整分钟播报；事实/风险/踩坑外移成 `architecture-facts.md`、`risks.md`、`agent.md`。
 - 2026-10-30：加「数据清零」（训练/测试分开清、两步确认、不动设置）；连带修 BUG-005（设置面板不可滚动致底部按钮被裁）。
 - 2026-10-30：定位「添加到桌面」置灰真因＝小米浏览器只放行子域名根路径 → 主交付迁 Cloudflare Pages（`p064-muscle-guardian.pages.dev`），用户确认可加桌面；另做 WebView 内嵌 APK 兜底；阶段复盘落盘（`agent.md` 踩坑更正 + 上收标记）。
+- 2026-10-30 晚：README 重写 + 收尾发布两 skill 跑通；GitHub Release `v0.1.0`（release 签名 APK `muscle-guardian-v0.1.0.apk`）；补训练/测试/统计三 Tab 真实截图与 1600×900 封面；密钥改走本地 gitignore 文件 `android-apk/.keystore-pass`（`build-release.sh` 自动读取）。
 
 ## §6 接续提示词
 
