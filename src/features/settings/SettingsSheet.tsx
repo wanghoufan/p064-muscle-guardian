@@ -131,7 +131,7 @@ export function SettingsSheet({
           </Text>
         </View>
         <AppButton
-          title={STR.clearTrainings}
+          title={STR.clearAction}
           variant="ghost"
           onPress={() => setPending('trainings')}
           disabled={trainingCount === 0}
@@ -143,7 +143,7 @@ export function SettingsSheet({
           <Text style={[typography.body, { color: colors.textPrimary }]}>{STR.clearTests}</Text>
           <Text style={[typography.meta, { color: colors.textSecondary }]}>{STR.recordsUnit(testCount)}</Text>
         </View>
-        <AppButton title={STR.clearTests} variant="ghost" onPress={() => setPending('tests')} disabled={testCount === 0} />
+        <AppButton title={STR.clearAction} variant="ghost" onPress={() => setPending('tests')} disabled={testCount === 0} />
       </View>
 
       <AppButton
@@ -160,7 +160,7 @@ export function SettingsSheet({
           <Text style={[typography.meta, { color: colors.textSecondary }]}>{STR.clearWarn}</Text>
           <View style={styles.row}>
             <AppButton title={STR.cancel} variant="ghost" onPress={() => setPending(null)} style={styles.grow} />
-            <AppButton title={STR.clearDone} variant="danger" onPress={confirmClear} style={styles.grow} />
+            <AppButton title={STR.clearConfirmBtn} variant="danger" onPress={confirmClear} style={styles.grow} />
           </View>
         </View>
       ) : null}
