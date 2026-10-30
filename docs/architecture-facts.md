@@ -29,7 +29,11 @@
 - 特性：`setMediaPlaybackRequiresUserGesture(false)`（否则语音要点两次）、DOM storage 开（记录存本机）、file:// 加载 → **SW 不生效但也不需要**（资源全在包内）。
 - 改网页后必须重新执行 `npm run build && ./android-apk/build.sh` 才能进包。
 
-## 部署
+## 部署（两处）
+
+- **主交付：Cloudflare Pages 根路径** `https://p064-muscle-guardian.pages.dev/`。小米自带浏览器只对根路径放行「添加到桌面」，这是能装的关键。部署：`npm run deploy:cf`（build 时 `PUBLIC_ORIGIN` 指 pages.dev；wrangler 直传 dist，免费额度）。
+- **镜像：GitHub Pages 子路径** `https://wanghoufan.github.io/p064-muscle-guardian/`（push main 自动构建，Chrome 可装，小米浏览器装不了）。
+
 
 - 仓库 `github.com/wanghoufan/p064-muscle-guardian`（**public**，免费套餐 Pages 不支持 private），`.github/workflows/pages.yml` push main 即构建发布。
 - 线上：`https://wanghoufan.github.io/p064-muscle-guardian/`；SW 接管后离线可用。

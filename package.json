@@ -8,7 +8,9 @@
     "build": "node scripts/check-voice.mjs && expo export --platform web && node scripts/prepare-web.cjs",
     "typecheck": "tsc --noEmit",
     "lint": "expo lint",
-    "test": "jest"
+    "test": "jest",
+    "build:cf": "PUBLIC_ORIGIN=https://p064-muscle-guardian.pages.dev npm run build",
+    "deploy:cf": "npm run build:cf && node scripts/deploy-cf.mjs"
   },
   "dependencies": {
     "@expo/metro-runtime": "~57.0.17",
