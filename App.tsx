@@ -7,8 +7,7 @@ import { ThemeProvider, useTheme } from './src/theme/ThemeContext';
 import { STR } from './src/i18n/strings';
 import { PersistedState, TabKey, TrainingRecord, TestRecord, Preferences } from './src/types';
 import { loadState, saveState, resetState } from './src/storage/storage';
-import { setVoiceEnabled } from './src/services/speech';
-import { hasChineseVoice } from './src/services/speech';
+import { isVoiceAvailable, preloadVoice, setVoiceEnabled } from './src/services/speech';
 import { TrainScreen } from './src/features/train/TrainScreen';
 import { TestScreen } from './src/features/test/TestScreen';
 import { StatsScreen } from './src/features/stats/StatsScreen';
@@ -40,7 +39,8 @@ function Root() {
       setMode(loaded.prefs.themeMode);
       setVoiceEnabled(loaded.prefs.voiceEnabled);
       if (typeof document !== 'undefined') document.documentElement.lang = 'zh-CN';
-      void hasChineseVoice().then((ok) => {
+      void preloadVoice(['prep-3', 'prep-2', 'prep-1', 'start', 'rest-1', 'rest-2', 'rest-3', 'finish']);
+      void isVoiceAvailable().then((ok) => {
         if (!cancelled) setVoiceAvailable(ok);
       });
       void SplashScreen.hideAsync().catch(() => undefined);
