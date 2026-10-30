@@ -13,19 +13,30 @@ for (const name of ['icon-192.png', 'icon-512.png', 'apple-touch-icon.png']) {
 fs.writeFileSync(path.join(dist, '.nojekyll'), '');
 
 const BG = '#F7F4EC';
+// 小米自带浏览器（com.android.browser）对 manifest 用自有校验：start_url / icons 写相对路径
+// 会被判不合格，菜单里的「添加到桌面」直接置灰。用 PUBLIC_ORIGIN 输出绝对地址规避。
+const ORIGIN = (process.env.PUBLIC_ORIGIN || '').replace(/\/+$/, '');
+const abs = (rel) => (ORIGIN ? `${ORIGIN}/${rel.replace(/^\.?\//, '')}` : `./${rel.replace(/^\.?\//, '')}`);
+const START = ORIGIN ? `${ORIGIN}/` : './';
 const manifest = {
+  id: START,
   name: '肌肉守护者',
   short_name: '肌肉守护者',
+  description: '每天蹲一会儿，腿更稳',
   lang: 'zh-CN',
-  start_url: './',
-  scope: './',
+  dir: 'ltr',
+  start_url: START,
+  scope: START,
   display: 'standalone',
+  display_override: ['standalone', 'minimal-ui'],
+  orientation: 'portrait',
   background_color: BG,
   theme_color: BG,
   icons: [192, 512].map((size) => ({
-    src: `./icon-${size}.png`,
+    src: abs(`icon-${size}.png`),
     sizes: `${size}x${size}`,
     type: 'image/png',
+    purpose: 'any',
   })),
 };
 fs.writeFileSync(path.join(dist, 'manifest.webmanifest'), JSON.stringify(manifest, null, 2));
