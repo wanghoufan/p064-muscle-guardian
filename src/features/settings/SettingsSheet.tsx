@@ -13,7 +13,11 @@ interface Props {
   onClose: () => void;
   prefs: Preferences;
   onPatch: (patch: Partial<Preferences>) => void;
-  onClear: () => void;
+  trainingCount: number;
+  testCount: number;
+  onClearTrainings: () => void;
+  onClearTests: () => void;
+  onClearAll: () => void;
   voiceAvailable?: boolean;
 }
 
@@ -23,9 +27,32 @@ const THEMES: { key: ThemeMode; label: string }[] = [
   { key: 'dark', label: STR.themeDark },
 ];
 
-export function SettingsSheet({ visible, onClose, prefs, onPatch, onClear, voiceAvailable = true }: Props) {
+type ClearTarget = 'trainings' | 'tests' | 'all';
+
+export function SettingsSheet({
+  visible,
+  onClose,
+  prefs,
+  onPatch,
+  trainingCount,
+  testCount,
+  onClearTrainings,
+  onClearTests,
+  onClearAll,
+  voiceAvailable = true,
+}: Props) {
   const { colors, typography } = useTheme();
-  const [clearStep, setClearStep] = useState(0);
+  const [pending, setPending] = useState<ClearTarget | null>(null);
+
+  const askText =
+    pending === 'trainings' ? STR.clearTrainingsAsk : pending === 'tests' ? STR.clearTestsAsk : STR.clearAllAsk;
+
+  const confirmClear = () => {
+    if (pending === 'trainings') onClearTrainings();
+    else if (pending === 'tests') onClearTests();
+    else if (pending === 'all') onClearAll();
+    setPending(null);
+  };
 
   return (
     <Sheet visible={visible} onClose={onClose}>
@@ -92,36 +119,51 @@ export function SettingsSheet({ visible, onClose, prefs, onPatch, onClear, voice
         </Text>
       </View>
 
-      {clearStep === 0 ? (
-        <AppButton
-          title={STR.clearAll}
-          variant="ghost"
-          onPress={() => setClearStep(1)}
-          style={{ marginTop: spacing.lg }}
-        />
-      ) : (
-        <View style={{ marginTop: spacing.lg, gap: spacing.sm }}>
-          <Text style={[typography.body, { color: colors.danger }]}>
-            {clearStep === 1 ? STR.clearConfirm1 : STR.clearConfirm2}
+      <Text style={[typography.small, { color: colors.textSecondary, marginTop: spacing.lg, marginBottom: spacing.sm }]}>
+        {STR.dataSection}
+      </Text>
+
+      <View style={[styles.settingRow, { borderTopColor: colors.border, marginTop: 0 }]}>
+        <View style={styles.grow}>
+          <Text style={[typography.body, { color: colors.textPrimary }]}>{STR.clearTrainings}</Text>
+          <Text style={[typography.meta, { color: colors.textSecondary }]}>
+            {STR.recordsUnit(trainingCount)}
           </Text>
+        </View>
+        <AppButton
+          title={STR.clearTrainings}
+          variant="ghost"
+          onPress={() => setPending('trainings')}
+          disabled={trainingCount === 0}
+        />
+      </View>
+
+      <View style={[styles.settingRow, { borderTopColor: colors.border }]}>
+        <View style={styles.grow}>
+          <Text style={[typography.body, { color: colors.textPrimary }]}>{STR.clearTests}</Text>
+          <Text style={[typography.meta, { color: colors.textSecondary }]}>{STR.recordsUnit(testCount)}</Text>
+        </View>
+        <AppButton title={STR.clearTests} variant="ghost" onPress={() => setPending('tests')} disabled={testCount === 0} />
+      </View>
+
+      <AppButton
+        title={STR.clearAll}
+        variant="ghost"
+        onPress={() => setPending('all')}
+        disabled={trainingCount === 0 && testCount === 0}
+        style={{ marginTop: spacing.sm }}
+      />
+
+      {pending ? (
+        <View style={{ marginTop: spacing.md, gap: spacing.sm }}>
+          <Text style={[typography.body, { color: colors.danger }]}>{askText}</Text>
+          <Text style={[typography.meta, { color: colors.textSecondary }]}>{STR.clearWarn}</Text>
           <View style={styles.row}>
-            <AppButton title={STR.cancel} variant="ghost" onPress={() => setClearStep(0)} style={styles.grow} />
-            <AppButton
-              title={clearStep === 1 ? '继续' : STR.clearAll}
-              variant="danger"
-              onPress={() => {
-                if (clearStep === 1) {
-                  setClearStep(2);
-                } else {
-                  onClear();
-                  setClearStep(0);
-                }
-              }}
-              style={styles.grow}
-            />
+            <AppButton title={STR.cancel} variant="ghost" onPress={() => setPending(null)} style={styles.grow} />
+            <AppButton title={STR.clearDone} variant="danger" onPress={confirmClear} style={styles.grow} />
           </View>
         </View>
-      )}
+      ) : null}
 
       <AppButton title={STR.close} variant="soft" onPress={onClose} style={{ marginTop: spacing.md }} />
     </Sheet>

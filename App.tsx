@@ -6,7 +6,7 @@ import { SafeAreaProvider, SafeAreaView } from 'react-native-safe-area-context';
 import { ThemeProvider, useTheme } from './src/theme/ThemeContext';
 import { STR } from './src/i18n/strings';
 import { PersistedState, TabKey, TrainingRecord, TestRecord, Preferences } from './src/types';
-import { loadState, saveState, resetState } from './src/storage/storage';
+import { loadState, saveState } from './src/storage/storage';
 import { isVoiceAvailable, preloadVoice, setVoiceEnabled } from './src/services/speech';
 import { TrainScreen } from './src/features/train/TrainScreen';
 import { TestScreen } from './src/features/test/TestScreen';
@@ -88,13 +88,10 @@ function Root() {
     setState((prev) => (prev ? { ...prev, tests: [...prev.tests, record] } : prev));
   };
 
-  const clearAll = () => {
-    void resetState().then((fresh) => {
-      setState(fresh);
-      setMode('system');
-      setVoiceEnabled(true);
-    });
-  };
+  // 清数据不清设置：训练/测试记录分别可清，主题与语音偏好保持不动。
+  const clearTrainings = () => setState((prev) => (prev ? { ...prev, trainings: [] } : prev));
+  const clearTests = () => setState((prev) => (prev ? { ...prev, tests: [] } : prev));
+  const clearAll = () => setState((prev) => (prev ? { ...prev, trainings: [], tests: [] } : prev));
 
   const content = useMemo(() => {
     if (!state) return null;
@@ -149,7 +146,11 @@ function Root() {
           onClose={() => setSettingsOpen(false)}
           prefs={state.prefs}
           onPatch={updatePrefs}
-          onClear={clearAll}
+          trainingCount={state.trainings.length}
+          testCount={state.tests.length}
+          onClearTrainings={clearTrainings}
+          onClearTests={clearTests}
+          onClearAll={clearAll}
           voiceAvailable={voiceAvailable}
         />
       ) : null}
