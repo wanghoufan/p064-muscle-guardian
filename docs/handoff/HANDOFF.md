@@ -17,17 +17,17 @@
 
 ## §1 当前进展
 
-- Captured at：2026-10-30 18:28
+- Captured at：2026-10-30 18:30
 - PLAN_VERSION：以 `docs/pm/PRODUCT_PLAN.md` 为需求真源（当前 V1.1）
 - PROJECT_PHASE：DEVELOP（用户已下「开发」令；Phase1 Gate 记 IN_PROGRESS，按连续推进执行）
 - PLAN_READINESS_SCORE：88
 - PLAN_GATE：IN_PROGRESS（未正式放行，开发为用户当场授权）
-- DEV_BASELINE：0.1.0（`dist` 17:20 重建，SW cache=muscle-keeper-454038382f50cfb9，54 个预缓存文件）
+- DEV_BASELINE：0.1.0｜主交付 `https://p064-muscle-guardian.pages.dev/`（SW cache=muscle-keeper-8039c84c702cb4ae）｜镜像 GitHub Pages（cache=muscle-keeper-501f2ff0d017a10c）｜APK `android-apk/肌肉守护者.apk`
 - CHANGE_REQUEST：NONE
 - Stage ID：Phase2 首轮实现（064-ing-肌肉守护者）
 - 剩 P0：①用户人耳确认「三二一开始／整分钟播报」后签收 ②图标仍为方向②，A1 定的是方向① ③AC-33 冻结记录未产出（矩阵唯一 NOT_TESTED）
 - 当前 Task：BUG-001 已闭环＋Web QA 回归＋真机 QA 完成；用户四项已拍板（A1/D1/E1+E2 全授权/F1）
-- 本轮已完成：⓪语音方案改造：小米浏览器无 Web Speech API → 改为预置 mp3（46 条，SW 预缓存），实测出声 ①BUG-001 修复（根因：`setMode` 引用不稳→hydrate 反复重跑回滚偏好）②BUG-002 `.pwa` 后缀、BUG-003 长按选中菜单 一并修 ③Neo 后台回归（三态主题+刷新持久化+训练/测试/统计+离线产物）④真机 QA：Redmi 22101316C 14 项，13 PASS / 1 未完成（安装到主屏），详见 `docs/qa/真机QA-结果-2026-10-30.md` ⑥验收矩阵回填 14 PASS / 0 FAIL / 1 NOT_TESTED / 29 PARTIAL（AC-23 随语音改造改判）⑦语音加回归闸：48 例映射测试＋构建前 `check-voice`（46 条 mp3 缺一即失败）⑨修窄屏溢出（BUG-006：档位 minWidth 写死致微信里右侧被裁）＋小米浏览器「添加到桌面」置灰（BUG-007：其规则是 `display:standalone` 就禁用快捷方式，改 `browser`）⑪定位「添加到桌面」置灰真因＝**小米浏览器只放行根路径站点**（子路径必灰，提词器 pages.dev 根域可装为反证）→ 新增 Cloudflare Pages 根路径部署（`npm run deploy:cf`）⑩新增 **Android APK 通道**（`android-apk/`，WebView 内嵌 dist，无 Gradle，`./android-apk/build.sh` 出 ~590KB 安装包，彻底绕开浏览器菜单）⑧按用户要求加「数据清零」：设置→数据区，训练记录/测试记录分别可清＋清空全部，两步确认，**只清记录不动主题与语音设置**（原「清空所有记录」会连设置一起重置）
+- 本轮已完成：⓪语音方案改造：小米浏览器无 Web Speech API → 改为预置 mp3（46 条，SW 预缓存），实测出声 ①BUG-001 修复（根因：`setMode` 引用不稳→hydrate 反复重跑回滚偏好）②BUG-002 `.pwa` 后缀、BUG-003 长按选中菜单 一并修 ③Neo 后台回归（三态主题+刷新持久化+训练/测试/统计+离线产物）④真机 QA：Redmi 22101316C 14 项，13 PASS / 1 未完成（安装到主屏），详见 `docs/qa/真机QA-结果-2026-10-30.md` ⑥验收矩阵回填 14 PASS / 0 FAIL / 1 NOT_TESTED / 29 PARTIAL（AC-23 随语音改造改判）⑦语音加回归闸：48 例映射测试＋构建前 `check-voice`（46 条 mp3 缺一即失败）⑨修窄屏溢出（BUG-006：档位 minWidth 写死致微信里右侧被裁）⑪修「添加到桌面」置灰（BUG-007，曾误判为 display 问题，已更正）——真因＝**小米浏览器只放行根路径站点**（子路径必灰，提词器 pages.dev 根域可装为反证）→ 新增 Cloudflare Pages 根路径部署（`npm run deploy:cf`）⑩新增 **Android APK 通道**（`android-apk/`，WebView 内嵌 dist，无 Gradle，`./android-apk/build.sh` 出 ~590KB 安装包，彻底绕开浏览器菜单）⑧按用户要求加「数据清零」：设置→数据区，训练记录/测试记录分别可清＋清空全部，两步确认，**只清记录不动主题与语音设置**（原「清空所有记录」会连设置一起重置）
 
 ## §2 下一步
 
@@ -62,4 +62,4 @@
 
 ## §6 接续提示词
 
-先读本文件 §0–§3 与 `agent.md`，按 §2 等用户人耳确认后签收，再重出图标方向①并补 AC-33 冻结记录。
+先读本文件 §0–§3 与 `agent.md`，按 §2 让用户从 pages.dev 图标点开听一次语音后签收，再按 A1 重出图标方向①并补 AC-33 冻结记录。
