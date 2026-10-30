@@ -9,6 +9,7 @@
 | BUG-002 | P1 | 否 | 构建产物 `dist/manifest.webmanifest` 的 `short_name` 与 `apple-mobile-web-app-title` 均为「肌肉守护者.pwa」，装到桌面后图标名会带 `.pwa` 后缀 | CLOSED（2026-10-30 16:19） | 主开发者修复 | 根因：`scripts/prepare-web.cjs` 硬编码 `.pwa` 后缀。修法：两处均改为「肌肉守护者」；重建后 `grep short_name dist/manifest.webmanifest` 得「肌肉守护者」 |
 | BUG-003 | P1 | 否 | 真机长按页面文字会弹 Chrome 文本选择菜单（「取消」浮条），遮挡正在展示的训练界面 | CLOSED（待用户真机复核） | 主开发者修复 | 修法：`prepare-web.cjs` 注入 `html,body{-webkit-user-select:none;user-select:none;-webkit-touch-callout:none}`。证据截图 `docs/qa/shots/dev-longpress-selection-popup.png` |
 | BUG-004 | P0 | 是 | 小米自带浏览器（com.android.browser 20.29）中打开已安装的 PWA，训练全程无任何语音 | CLOSED（2026-10-30 17:12） | 主开发者修复 | 根因：MIUI 浏览器**不提供 Web Speech API**——`typeof speechSynthesis === 'undefined'`、`typeof SpeechSynthesisUtterance === 'undefined'`（小米浏览器 WebView 调试口实测）。修法：改为播**预置中文语音 mp3**（`public/voice/` 46 条，随 SW 预缓存），无对应剪辑才退回系统 TTS。验证：真实触摸点「1分钟」→ 播放序列 `prep-3/prep-2/prep-1/start` 各一次；logcat `AudioTrack createTrack_l ... mSampleRate=24000 ... packageName: com.android.browser`；2 分钟档跑到整分钟播 `rest-1.mp3` |
+| BUG-005 | P1 | 否 | 真机（小米浏览器）打开设置面板 → 底部「清空所有记录」「关闭」被裁到屏幕外，面板不可滚动，只能点遮罩关闭 | CLOSED（2026-10-30 17:34） | 主开发者修复 | 根因：`Sheet` 面板 `maxHeight:88%` 但内容不滚动，加「数据」区后内容变高即溢出。修法：`Sheet` 内容改 `ScrollView` 承载（`src/components/Sheet.tsx`）。验证：面板滚动祖先 `scrollHeight 716 / clientHeight 580`，滚到底后「关闭」`y=605 < 视口 690` 可见可点，截图 `docs/qa/shots/dev-settings-data.png` |
 
 ## AC 操作级记录（**AC 结论不在本表落**）
 
