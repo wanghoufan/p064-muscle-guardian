@@ -5,7 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "start": "expo start",
-    "build": "expo export --platform web && node scripts/prepare-web.cjs",
+    "build": "node scripts/check-voice.mjs && expo export --platform web && node scripts/prepare-web.cjs",
     "typecheck": "tsc --noEmit",
     "lint": "expo lint",
     "test": "jest"
