@@ -35,7 +35,7 @@
 
 ## §2 下一步
 
-- 下一步：用户已在新地址成功添加桌面图标（18:26 确认）。剩：从图标点开听一次语音→用户签收；GitHub Pages 子路径仅作镜像，不再作交付 → 按 A1 重出图标方向①（192/512/180）→ 补 AC-33 冻结记录 → 补 360×640 窄屏与 OPPO/华为安装入口说明（R3）
+- 下一步：用户已在新地址成功添加桌面图标（18:26 确认）。剩：从图标点开听一次语音→用户签收；GitHub Pages 子路径仅作镜像，不再作交付 → 按 A1 重出图标方向①（192/512/180）→ 补 AC-33 冻结记录 → 补 360×640 窄屏与华为安装入口说明（R3；OPPO 入口已于 2026-10-31 真机验证并写入 `docs/安装说明-手机.md`）
 - 已拍板：A1 肌肉守护者/MuscleKeeper（图标方向①腿形护盾，现网图标仍为②，待重出）/ D1 暂不做导出 / E1+E2 全授权（commit、push origin/main、Pages 工作流、public 仓库）/ F1 Redmi（QA 机 22101316C）
 - permission_request：（无）
 
@@ -65,6 +65,7 @@
 - 2026-10-30：加「数据清零」（训练/测试分开清、两步确认、不动设置）；连带修 BUG-005（设置面板不可滚动致底部按钮被裁）。
 - 2026-10-30：定位「添加到桌面」置灰真因＝小米浏览器只放行子域名根路径 → 主交付迁 Cloudflare Pages（`p064-muscle-guardian.pages.dev`），用户确认可加桌面；另做 WebView 内嵌 APK 兜底；阶段复盘落盘（`agent.md` 踩坑更正 + 上收标记）。
 - 2026-10-30 晚：README 重写 + 收尾发布两 skill 跑通；GitHub Release `v0.1.0`（release 签名 APK `muscle-guardian-v0.1.0.apk`）；补训练/测试/统计三 Tab 真实截图与 1600×900 封面；密钥改走本地 gitignore 文件 `android-apk/.keystore-pass`（`build-release.sh` 自动读取）。
+- 2026-10-31：OPPO 真机（PKD130 / ColorOS 15 / `com.heytap.browser 40.10.24.1`）验证「添加至桌面」入口＝**书签收藏 → 长按 → 添加至桌面**（不在页面菜单）；加出的是 1×1 书签微件、点开仍走浏览器，非 standalone；已补 `docs/安装说明-手机.md` 与 `agent.md` 踩坑。
 
 ## §6 接续提示词
 

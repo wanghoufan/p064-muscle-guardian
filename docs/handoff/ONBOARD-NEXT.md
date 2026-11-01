@@ -30,7 +30,7 @@
 - 图标仍为方向②，A1 已定方向①（腿形护盾）→ 重出 192 / 512 / 180
 - 用户人耳确认语音（「三二一开始」/ 整分钟播报）后正式签收首次发布
 - AC-33 冻结记录未产出（验收矩阵唯一 NOT_TESTED）
-- 窄屏 360×640 与 OPPO / 华为安装入口说明（风险 R3）
+- 窄屏 360×640 与华为安装入口说明（风险 R3；OPPO 入口已于 2026-10-31 真机验证并写入 `docs/安装说明-手机.md`）
 
 ## 给用户的一段「接续提示词」（直接复制给新智能体）
 > 你接手 GitHub 仓库 `wanghoufan/p064-muscle-guardian`（本地路径见下）的开发。先读 `docs/handoff/ONBOARD-NEXT.md` 与 `docs/handoff/HANDOFF.md`，按里面的顺序搞清楚现状，**不要凭空猜测**。当前 v0.1.0 已发布（Pages 在线站 + GitHub Release + Android APK）。重要约束：① 签名密钥密码只在本机 `android-apk/.keystore-pass`，仓库里没有任何明文，别试图从代码里找；构建用 `bash android-apk/build-release.sh`。② 仓库是 public，别提交任何密钥。③ 项目只做中文（`strings.ts` 规定）。接手后先告诉我你理解了什么、以及准备做什么，再动手。
