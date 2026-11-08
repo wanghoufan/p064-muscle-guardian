@@ -1,15 +1,16 @@
 # 肌肉守护者
 
+[English](./README.en.md) ｜ 简体中文
+
 给家里长辈用的深蹲训练小工具：点一下时长就开始，带语音提示和安全提醒，数据只存在本机。
 
 <div align="center">
   <img src="docs/qa/shots/web-train.png" width="200" alt="训练首页（倒计时档位 + 自由计时）"/>
   <img src="docs/qa/shots/web-test.png" width="200" alt="摸底测试（开始测试 + 成绩趋势）"/>
   <img src="docs/qa/shots/web-stats.png" width="200" alt="统计（今日 / 近7天 / 近30天）"/>
-  <img src="docs/qa/shots/dev-settings-data.png" width="200" alt="设置（语音 / 主题 / 数据清空）"/>
 </div>
 
-> 截图来自真实运行的网页版（空状态，无用户数据）。底部三个 Tab 为「训练 / 测试 / 统计」。
+> 截图来自真实运行的网页版（空状态，无用户数据）。底部三个 Tab 为「训练 / 测试 / 统计」，设置面板（语音 / 主题 / 数据清空）从训练页进入。
 
 ## 这是什么
 
@@ -33,9 +34,9 @@
 ### 给家人用（不用写代码）
 
 - **安卓**：到 [Releases](https://github.com/wanghoufan/p064-muscle-guardian/releases) 下载 `肌肉守护者.apk`（安装前在系统设置里允许「未知来源」应用）。
-- **网页 / 添加到桌面**：用浏览器打开网页版，按菜单「添加到桌面」即可像 App 一样从桌面启动（PWA）。
+- **网页 / 添加到桌面**：直接用浏览器打开 <https://wanghoufan.github.io/p064-muscle-guardian/> 或 <https://p064-muscle-guardian.pages.dev>，按菜单「添加到桌面」即可像 App 一样从桌面启动（PWA）。
 
-> 已发布 **release 签名**的正式 Release（见 Releases 页），APK 可直接安装分发；网页版部署在 Cloudflare Pages，同样可添加到桌面。
+> 已发布 **release 签名**的正式 Release（见 Releases 页），APK 可直接安装分发；网页版同时部署在 GitHub Pages 与 Cloudflare Pages，两处均可添加到桌面。
 
 ### 自己跑起来改
 
@@ -49,7 +50,7 @@ npm start        # 启动 Expo，手机或浏览器打开
 | 平台 | 形态 | 说明 |
 |---|---|---|
 | Android | APK（包名 `com.musclekeeper.app`，minSdk 23） | 内嵌网页、完全离线，见 `android-apk/build.sh` |
-| Web | PWA（Cloudflare Pages） | `npm run build` 后 `npm run deploy:cf` 部署 |
+| Web | PWA（GitHub Pages / Cloudflare Pages） | GitHub Pages 由 `.github/workflows/pages.yml` 在 push 到 main 时构建发布；Cloudflare 走 `npm run deploy:cf` |
 
 主题支持「跟随系统 / 浅色 / 深色」三态；语音提示可开关。
 
